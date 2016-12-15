@@ -18,11 +18,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = getLogger(MealServlet.class);
+    private List<MealWithExceed> withExceeded;
+
+    public MealServlet() {
+        this.withExceeded = MealsUtil.getWithExceeded(new MealWithExceedDao().getMeals(), 2000);
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOG.debug("redirect to meals");
-
-        List<MealWithExceed> withExceeded = MealsUtil.getWithExceeded(new MealWithExceedDao().getMeals(), 2000);
         request.setAttribute("withExceeded", withExceeded);
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
 
