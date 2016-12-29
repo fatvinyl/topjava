@@ -19,7 +19,10 @@ import java.util.List;
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
+        //создали контекст. в xml файле сканируютс аннотации из директорий repository.jdbc, service и web
+        //падает, т.к. не мжоет создать бин jdbcUserRepositoryImpl, который принимает в конструкторе бин Datasourse, а он описан в spring-db.xml
         try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml")) {
+            //выводит в консоль все найденные бины.
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(UserTestData.USER);

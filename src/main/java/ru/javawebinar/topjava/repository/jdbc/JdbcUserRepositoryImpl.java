@@ -21,16 +21,16 @@ import java.util.List;
 
 @Repository
 public class JdbcUserRepositoryImpl implements UserRepository {
-
-    private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+                        //преобразует результат запроса в объект USER
+    private static final BeanPropertyRowMapper<User> ROW_MAPPER_USER = BeanPropertyRowMapper.newInstance(User.class);
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private JdbcTemplate jdbcTemplate; //выполняет SQL запросы
 
-    private SimpleJdbcInsert insertUser;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate; //выполняет SQL запросы
+
+    private SimpleJdbcInsert insertUser;//объект для добавления значений в таблицу. Нужно предоставить имя таблицы и Map(имя колонки, значение)
 
     @Autowired
     public JdbcUserRepositoryImpl(DataSource dataSource) {
@@ -68,19 +68,19 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public User get(int id) {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER_USER, id);
         return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public User getByEmail(String email) {
-//        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
+//        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER_USER, email);
+        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER_USER, email);
         return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
+        return jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER_USER);
     }
 }
