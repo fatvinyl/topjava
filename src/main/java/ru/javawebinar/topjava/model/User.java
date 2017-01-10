@@ -16,12 +16,13 @@ import java.util.Set;
  * User: gkislin
  * Date: 22.08.2014
  */
-@NamedQueries({
+@NamedQueries({ //преимущество NamedQueries в том, что они создаются на этапе загрузки Hibernate. Они проверяются и кэшируются. И потом уже проверенные берутся из кэша. Если сделали ошибку, то приложение просто не поднимется
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles ORDER BY u.name, u.email"),
 })
 @Entity
+//uniqueConstraints в нашем случае не обязательно, т.к. мы делаем базу сами и там все это прописано
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends NamedEntity {
 
@@ -29,9 +30,9 @@ public class User extends NamedEntity {
     public static final String ALL_SORTED = "User.getAllSorted";
     public static final String BY_EMAIL = "User.getByEmail";
 
-    @Column(name = "email", nullable = false, unique = true)
-    @Email
-    @NotEmpty
+    @Column(name = "email", nullable = false, unique = true) //уровень базы
+    @Email //уровень модели
+    @NotEmpty //уровень модели
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -46,9 +47,9 @@ public class User extends NamedEntity {
     private Date registered = new Date();
 
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))//в таблице user_roles создастся колонка user_id
     @Column(name = "role")
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER) //вместе с юзером из базы достаются сразу все роли. Если LAZY, то достанется ссылка, которая отаботает в момент запроса
     private Set<Role> roles;
 
     @Column(name = "calories_per_day", columnDefinition = "int default 2000")

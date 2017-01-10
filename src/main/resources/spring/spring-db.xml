@@ -11,8 +11,8 @@
 
     <!-- Change DB by comment/uncomment property-placeholder -->
 
-    <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
-    <!--<context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>-->
+    <!--<context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>-->
+    <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
 
     <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
 
@@ -33,10 +33,12 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="ru.javawebinar.**.model">
+        <!--запись p:dataSource-ref="dataSource" аналогична <property name="dataSource-ref" value="dataSource"/>-->
         <!--p:persistenceUnitName="persistenceUnit">-->
 
         <property name="jpaPropertyMap">
             <map>
+                <!--#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL} - это просто ссылка на значение "hibernate.format_sql", которую мы написали на Spring Expression Lang для удобства-->
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
                 <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
                 <!--<entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>-->

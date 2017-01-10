@@ -14,11 +14,13 @@ import java.util.List;
  * User: gkislin
  * Date: 29.08.2014
  */
-@Repository
-@Transactional(readOnly = true)
+@Repository //тот же компонент, только еще преобразовывает эксэпшны
+@Transactional(readOnly = true) //транзакция Spring. readOnly позволяет оптимизировать запросы к базе, не делать флаши и т.д. Если транзакцию убрать то оптимизация не проводится.
+                                //будет действовать на все методы, где транзакция явно не указана
 public class JpaUserRepositoryImpl implements UserRepository {
 
 /*
+    запись, если бы работали на Hibernate без JPA
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -28,16 +30,16 @@ public class JpaUserRepositoryImpl implements UserRepository {
 */
 
     @PersistenceContext
-    private EntityManager em;
-
+    private EntityManager em; //аналог сессии Spring, но сделан по спецификации JPA. Когда мы хотим сделать запрос к базе, из EntityManagerFactory создается ЕМ,
+                              //все, что мы достаем из базы - попадает в PersistanceContext, если делаем запрос второй раз, то все уже берется из контекста. Это как кэш м/у кодом и базой, куда клаутся Entity
     @Override
     @Transactional
     public User save(User user) {
         if (user.isNew()) {
-            em.persist(user);
+            em.persist(user); //persist - это как save
             return user;
         } else {
-            return em.merge(user);
+            return em.merge(user);//merge - это как update
         }
     }
 
@@ -50,10 +52,10 @@ public class JpaUserRepositoryImpl implements UserRepository {
     @Transactional
     public boolean delete(int id) {
 
-/*      User ref = em.getReference(User.class, id);
-        em.remove(ref);
+/*      User ref = em.getReference(User.class, id);  //getReference достает ссылку на объект. если в контексте это есть, то он достает весь объект. если нет, то он создает объект с id, а остальные поля LAZY. при первом обращени он идет в базу и достает объект
+        em.remove(ref); //для удаления ORMу нужен объект, а мы, чтобы не идти за ним в базу создаем getReference с id.
 
-        Query<User> query = em.createQuery("DELETE FROM User u WHERE u.id=:id");
+        Query<User> query = em.createQuery("DELETE FROM User u WHERE u.id=:id");//запросы на языке HQL/JPQL, где все операции мы производим с объектами
         return query.setParameter("id", id).executeUpdate() != 0;
 */
         return em.createNamedQuery(User.DELETE).setParameter("id", id).executeUpdate() != 0;

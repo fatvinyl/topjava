@@ -7,7 +7,7 @@ import javax.persistence.*;
  * Date: 22.08.2014
  */
 @MappedSuperclass
-@Access(AccessType.FIELD)
+@Access(AccessType.FIELD) //доступ через поля, а не через их геттеры и сеттеры
 public class BaseEntity {
     public static final int START_SEQ = 100000;
 
