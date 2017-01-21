@@ -11,6 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.javawebinar.topjava.Profiles;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
@@ -64,6 +65,9 @@ public abstract class UserServiceTest {
     @Test
     public void testGet() throws Exception {
         User user = service.get(USER_ID);
+        for(Meal meal : user.getMeals()) {
+            System.out.println(meal.toString());
+        }
         MATCHER.assertEquals(USER, user);
     }
 
