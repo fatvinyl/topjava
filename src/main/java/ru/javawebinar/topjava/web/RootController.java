@@ -19,21 +19,21 @@ public class RootController {
     @Autowired
     private UserService service;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)//сюда заходим при запуске программы
     public String root() {
         return "index";
-    }
+    } //возвращаем страницу index.jsp
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String users(Model model) {
-        model.addAttribute("users", service.getAll());
-        return "users";
+    public String users(Model model) {  //в метод передаем модель (по сути это просто Map(K,V))
+        model.addAttribute("users", service.getAll()); // добавляем в модель всех юзеров из базы.
+        return "users"; //возвращаем страницу user.jsp. там будет видна наша модель
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public String setUser(HttpServletRequest request) {
-        int userId = Integer.valueOf(request.getParameter("userId"));
-        AuthorizedUser.setId(userId);
-        return "redirect:meals";
+    @RequestMapping(value = "/users", method = RequestMethod.POST) //при выборе типа юзера в index.jsp и нажатии кнопки (запрос POST) попадаем сюда
+    public String setUser(HttpServletRequest request) { //в метод передаем запрос
+        int userId = Integer.valueOf(request.getParameter("userId")); //из запроса достаем userId
+        AuthorizedUser.setId(userId);//авторизируем пользователя по userId
+        return "redirect:meals"; //редиректимся на запрос /meals с методом GET
     }
 }

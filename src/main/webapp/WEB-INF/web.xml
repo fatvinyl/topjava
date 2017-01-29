@@ -9,7 +9,7 @@
         <param-name>spring.profiles.default</param-name>
         <param-value>postgres,datajpa</param-value>
     </context-param>
-
+<!--ContextLoaderListener ищет contextConfigLocation и поднимает контекст Спринга с spring-app.xml и spring-db.xml-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
