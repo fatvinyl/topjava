@@ -12,9 +12,9 @@ import static ru.javawebinar.topjava.web.json.JacksonObjectMapper.getMapper;
  * User: gkislin
  * Date: 30.04.2014
  */
-public class JsonUtil {
+public class JsonUtil { //класс для сериализации/десириализации объектов в формат JSON
 
-    public static <T> List<T> readValues(String json, Class<T> clazz) {
+    public static <T> List<T> readValues(String json, Class<T> clazz) { //подаем строку jackson, подаем какой-то класс
         ObjectReader reader = getMapper().readerFor(clazz);
         try {
             return reader.<T>readValues(json).readAll();

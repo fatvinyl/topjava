@@ -23,13 +23,13 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     private static final String REST_URL = AdminRestController.REST_URL + '/';
 
     @Test
-    public void testGet() throws Exception {
+    public void testGet() throws Exception { //описание аналогично RootControllerTest
         mockMvc.perform(get(REST_URL + ADMIN_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
         // https://jira.spring.io/browse/SPR-14472
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MATCHER.contentMatcher(ADMIN));
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)) //проверяем, что тип содержимого (контент) в формате JSON
+                .andExpect(MATCHER.contentMatcher(ADMIN)); //сравниваем содержание BODY, что там действительно пришел админ
     }
 
     @Test

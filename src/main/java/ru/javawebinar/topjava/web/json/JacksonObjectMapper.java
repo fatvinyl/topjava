@@ -22,7 +22,7 @@ public class JacksonObjectMapper extends ObjectMapper {
 
     private static final ObjectMapper MAPPER = new JacksonObjectMapper();
 
-    public static ObjectMapper getMapper() {
+    public static ObjectMapper getMapper() {//фактори метод, который спринг вызывает, чтобы получить инстанс этого метода
         return MAPPER;
     }
 
@@ -34,6 +34,6 @@ public class JacksonObjectMapper extends ObjectMapper {
 
         setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
         setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        setSerializationInclusion(JsonInclude.Include.NON_NULL); //исключаем нулевые поля
     }
 }

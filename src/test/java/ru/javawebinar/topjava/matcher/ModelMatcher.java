@@ -101,12 +101,12 @@ public class ModelMatcher<T> {
     }
 
     public ResultMatcher contentMatcher(T expect) {
-        return content().string(
-                new TestMatcher<T>(expect) {
+        return content().string(//матчер извлекает из запроса контент, извлекает из него body
+                new TestMatcher<T>(expect) { // мы передает туда Entity expected
                     @Override
                     protected boolean compare(T expected, String body) {
                         Wrapper expectedForCompare = wrap(expected);
-                        Wrapper actualForCompare = wrap(fromJsonValue(body));
+                        Wrapper actualForCompare = wrap(fromJsonValue(body)); //он боди из JSON читает в объект
                         return expectedForCompare.equals(actualForCompare);
                     }
                 });
@@ -122,7 +122,7 @@ public class ModelMatcher<T> {
                     @Override
                     protected boolean compare(List<T> expected, String actual) {
                         List<Wrapper> expectedList = wrap(expected);
-                        List<Wrapper> actualList = wrap(fromJsonValues(actual));
+                        List<Wrapper> actualList = wrap(fromJsonValues(actual));//
                         return expectedList.equals(actualList);
                     }
                 });

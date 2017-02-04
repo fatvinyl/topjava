@@ -14,7 +14,7 @@ import javax.persistence.*;
 @MappedSuperclass
 // http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
 @Access(AccessType.FIELD)
-//@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
+//@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE) //сериализуем только по полям. не смотрим на геттеры,  исГеттеры и сеттеры
 public class BaseEntity implements Persistable<Integer> {
     public static final int START_SEQ = 100000;
 

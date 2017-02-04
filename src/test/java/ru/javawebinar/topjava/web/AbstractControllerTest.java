@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.javawebinar.topjava.AllActiveProfileResolver;
 import ru.javawebinar.topjava.repository.JpaUtil;
+import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -29,7 +30,7 @@ import javax.annotation.PostConstruct;
 })
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
+@Transactional //конкретно в тестах это означает, что перед тестом транзакция начинается, а по окончанию - откатывается. Т.о. база остается в одном и том же состоянии. Это стандарная запись, но могут быть ошибки, т.к. у нас есть еще и другие транзакции.
 @ActiveProfiles(resolver = AllActiveProfileResolver.class)
 abstract public class AbstractControllerTest {
 
@@ -43,24 +44,27 @@ abstract public class AbstractControllerTest {
     @Autowired
     private JpaUtil jpaUtil;
 
-    protected MockMvc mockMvc;
+    protected MockMvc mockMvc;//специальный спринговский мок для тестирования MVC (эмуляция сервлетов).
 
     @Autowired
     protected UserService userService;
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    protected MealService mealService;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext; //через автовайред подтягиваем спринг контекст
 
     @PostConstruct
     private void postConstruct() {
-        mockMvc = MockMvcBuilders
+        mockMvc = MockMvcBuilders //так строится mockMvc. Такую запись можно найти в любом туториале.
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
                 .build();
     }
 
     @Before
-    public void setUp() {
+    public void setUp() {  //эвиктим кэш перед тестами
         userService.evictCache();
         jpaUtil.clear2ndLevelHibernateCache();
     }
