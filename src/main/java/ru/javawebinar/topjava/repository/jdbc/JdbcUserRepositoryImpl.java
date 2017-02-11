@@ -20,6 +20,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.function.Function;
 
 /**
  * User: gkislin
@@ -95,14 +96,15 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> getAll() {
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet("SELECT * FROM user_roles");
-        Map<Integer, Set<Role>> map = new HashMap<>();
-        while (rowSet.next()) {
-            Set<Role> roles = map.computeIfAbsent(rowSet.getInt("user_id"), userId -> EnumSet.noneOf(Role.class));
-            roles.add(Role.valueOf(rowSet.getString("role")));
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet("SELECT * FROM user_roles");//достаем из таблицы user_roles все объекты. там 4 строки (userId, role)
+        Map<Integer, Set<Role>> map = new HashMap<>(); //создаем пустой  map(userID, сет ролей для юзера)
+        while (rowSet.next()) { //условие цикла: пока в rowSet есть элементы
+            Set<Role> roles = map.computeIfAbsent(rowSet.getInt("user_id"), userId -> EnumSet.noneOf(Role.class));//добавляем в map пустой EnumSet<Role> с ключем userId, если данный ключ еще не был добавлен
+            //Set<Role> roles будет ссылаться на объект Set<Role> в map для конкретного юзера с userId
+            roles.add(Role.valueOf(rowSet.getString("role")));//добавляем в Set<Role> роль из rowSet
         }
-        List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        users.forEach(u -> u.setRoles(map.get(u.getId())));
+        List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);//ROW_MAPPER преобразует результат запроса в объект типа USER
+        users.forEach(u -> u.setRoles(map.get(u.getId()))); //проходимся по всем юзерам и заполняем у них Set<Role> из map
         return users;
     }
 

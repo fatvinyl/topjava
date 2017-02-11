@@ -1,26 +1,20 @@
-var ajaxUrl = 'ajax/admin/users/'; // URL, по которому работает AdminAjaxController
-var datatableApi; //переменная,  в которой будет храниться datatable
 
-// $(document).ready(function () {
+var ajaxUrl = 'ajax/meals/'; // URL, по которому работает MealAjaxController
+var datatableApi;
+
 $(function () {                                 //$ - это JQuery
     datatableApi = $('#datatable').DataTable({ //id = datatable в users.jsp.
         "paging": false,
         "info": true,
         "columns": [ //колонки. по умолчанию индексируются с 0
             {
-                "data": "name" //data - это связка между приходящими данными JSON и таблицей, name - навание колонки
+                "data": "date_time" //data - это связка между приходящими данными JSON и таблицей, name - навание колонки
             },
             {
-                "data": "email"
+                "data": "description"
             },
             {
-                "data": "roles"
-            },
-            {
-                "data": "enabled"
-            },
-            {
-                "data": "registered"
+                "data": "calories"
             },
             {
                 "defaultContent": "Edit",
