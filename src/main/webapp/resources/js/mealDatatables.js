@@ -3,12 +3,12 @@ var ajaxUrl = 'ajax/meals/'; // URL, по которому работает Meal
 var datatableApi;
 
 $(function () {                                 //$ - это JQuery
-    datatableApi = $('#datatable').DataTable({ //id = datatable в users.jsp.
+    datatableApi = $('#datatable').DataTable({ //id = datatable в meals.jsp.
         "paging": false,
         "info": true,
         "columns": [ //колонки. по умолчанию индексируются с 0
             {
-                "data": "date_time" //data - это связка между приходящими данными JSON и таблицей, name - навание колонки
+                "data": "dateTime" //data - это связка между приходящими данными JSON и таблицей, name - навание колонки
             },
             {
                 "data": "description"

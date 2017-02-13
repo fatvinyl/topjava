@@ -1,3 +1,5 @@
+var formFilter; //сюда будем сохранять данные с формы фильтра
+
 function makeEditable() {
     // $('.delete').click(function () {//нажимаем иконку delete (крестик) у какого-нибудь юзера в таблице. '.delete' означает, что мы вешаем его на весь класс, т.е. можем нажать у любого юзера
     //     deleteRow($(this).attr("id"));//вызывается функция (см. ниже) для удаления строки. в нее передаем id-шник нажатой кнопки
@@ -11,6 +13,13 @@ function makeEditable() {
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
     });
+
+    $('#byDate').submit(function () {
+        formFilter = $('#byDate');
+        filter();
+        return false;
+    });
+
 }
 
 function add() { //нажимаем на кнопку "+" в браузере, срабатывает onclick="add()" в users.jsp
@@ -23,7 +32,11 @@ function deleteRow(id) { //функция для удаления строки
         url: ajaxUrl + id, //указываем url, по которому будет происодить запрос
         type: 'DELETE', //указываем тип запроса
         success: function () { //колбэк, т.е. по успешному окончанию, когда нам сервер отдаст данные, нужно выполнить функцию.
-            updateTable(); //метод обновления таблицы (см. ниже)
+            if (formFilter == undefined) {
+                updateTable(); //метод обновления таблицы (см. ниже)
+            } else {
+                filter();
+            }
             successNoty('Deleted'); //всплывает скрипт с уведомлением "delete". метод см. ниже
         }
     });
@@ -47,10 +60,37 @@ function save() {
         data: form.serialize(),//в качестве данных передаем сериализацию формы. все имена и значения сериализуются в параметры запроса
         success: function () {
             $('#editRow').modal('hide');//по успешному окончанию прячем диалоговое окно
-            updateTable();//обновляем таблицу
+            if (formFilter == undefined) {
+                updateTable(); //метод обновления таблицы (см. ниже)
+            } else {
+                filter();
+            }
             successNoty('Saved');
         }
     });
+}
+
+function filter() {
+    var url = ajaxUrl + 'filter/';
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: formFilter.serialize(),
+        success: function (data) { //data - это наш List<MealWithExceeded> в формате JSON, который вернулся с сервера
+            datatableApi.clear();
+            $.each(data, function (key, item) {
+                datatableApi.row.add(item);
+            });
+            datatableApi.draw();
+
+        }
+    });
+
+}
+
+function reset() { //нажимаем кнопку reset в meals.jsp (сброс фильтра)
+    formFilter = undefined;
+    updateTable();
 }
 
 var failedNote;
@@ -80,4 +120,6 @@ function failNoty(event, jqXHR, options, jsExc) {
         layout: 'bottomRight'
     });
 }
+
+
 

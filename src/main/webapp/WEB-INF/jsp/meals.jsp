@@ -14,24 +14,25 @@
 
     <div class="jumbotron">
         <div class="container">
-            <form class="form-inline">
+            <form class="form-inline"  method="post" id="byDate">
                 <div class="form-group">
                     <label for="startDate"><spring:message code="meals.startDate"/></label>
-                    <input type="date" class="form-control" id="startDate">
+                    <input type="date" class="form-control" id="startDate" name="startDate">
                 </div>
                 <div class="form-group">
                     <label for="endDate"><spring:message code="meals.endDate"/>:</label>
-                    <input type="date" class="form-control" id="endDate">
+                    <input type="date" class="form-control" id="endDate" name="endDate">
                 </div>
                 <div class="form-group">
                     <label for="startTime"><spring:message code="meals.startTime"/>:</label>
-                    <input type="time" class="form-control" id="startTime">
+                    <input type="time" class="form-control" id="startTime" name="startTime">
                 </div>
                 <div class="form-group">
                     <label for="endTime"><spring:message code="meals.endTime"/>:</label>
-                    <input type="time" class="form-control" id="endTime">
+                    <input type="time" class="form-control" id="endTime" name="endTime">
                 </div>
                 <button type="submit" class="btn btn-success"><spring:message code="meals.filter"/></button>
+                <button  class="btn btn-warning" onclick="reset()"><spring:message code="meals.filter_reset"/></button>
             </form>
             <div class="shadow">
                 <h3><spring:message code="meals.title"/></h3>
@@ -54,7 +55,7 @@
                         <c:forEach items="${meals}" var="meal">
                             <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.MealWithExceed"/>
                             <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
-                                <td> ${fn:formatDateTime(meal.dateTime)} </td>
+                                <td>${fn:formatDateTime(meal.dateTime)}</td>
                                 <td>${meal.description}</td>
                                 <td>${meal.calories}</td>
                                 <td><a class="btn btn-xs btn-primary edit"  id="${meal.id}">
@@ -86,10 +87,10 @@
                     <input type="text" hidden="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="date_time" class="control-label col-xs-3"><spring:message code="meals.dateTime"/></label>
+                        <label for="dateTime" class="control-label col-xs-3"><spring:message code="meals.dateTime"/></label>
 
                         <div class="col-xs-9">
-                            <input type="datetime-local" class="form-control" id="date_time" name="date_time" >
+                            <input type="datetime-local" class="form-control" id="dateTime" name="dateTime" >
                         </div>
                     </div>
 
