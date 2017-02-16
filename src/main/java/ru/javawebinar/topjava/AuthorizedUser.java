@@ -22,7 +22,7 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         this.userTo = UserUtil.asTo(user);
     }
 
-    public static AuthorizedUser safeGet() {
+    public static AuthorizedUser safeGet() { //безопасно достаем
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
             return null;

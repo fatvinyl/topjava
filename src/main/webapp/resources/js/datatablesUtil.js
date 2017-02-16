@@ -17,11 +17,11 @@ function add(title) {
 
 function updateRow(id) {
     $('#modalTitle').html(editTitle);
-    $.get(ajaxUrl + id, function (data) {
-        $.each(data, function (key, value) {
-            form.find("input[name='" + key + "']").val(value);
-        });
-        $('#editRow').modal();
+    $.get(ajaxUrl + id, function (data) {//запрашиваем у сервера новые данные пользователя на случай если его кто-тоуспел отредактировать
+        $.each(data, function (key, value) { //похоже на for-each. для каждого элемента выполняется функция
+            form.find("input[name='" + key + "']").val(value);//в форме ищем элемент с именем key в JSON и присваиваем ему значение JSONа
+        }); //т.о. мы заполняем форму данными пришедшего к нам юзера
+        $('#editRow').modal();//показываем форму
     });
 }
 
@@ -41,6 +41,7 @@ function updateTableByData(data) {
 }
 
 function save() {
+    // debugger;
     $.ajax({
         type: "POST",
         url: ajaxUrl,

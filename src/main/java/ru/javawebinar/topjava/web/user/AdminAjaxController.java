@@ -37,10 +37,10 @@ public class AdminAjaxController extends AbstractUserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {
-        if (result.hasErrors()) {
+    public ResponseEntity<String> createOrUpdate(@Valid UserTo userTo, BindingResult result) {//@Valid - из стандартного пакета javax.validation. Spring смотрит поля в UserTo с аннотациями. BindingResult result - результат валидации
+        if (result.hasErrors()) { //проверяем, есть ли ошибки.
             StringBuilder sb = new StringBuilder();
-            result.getFieldErrors().forEach(fe -> sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("<br>"));
+            result.getFieldErrors().forEach(fe -> sb.append(fe.getField()).append(" ").append(fe.getDefaultMessage()).append("<br>"));//берем все поля, у которых есть ошибки, и добавляем описание ошибки
             return new ResponseEntity<>(sb.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
         if (userTo.isNew()) {
@@ -48,7 +48,7 @@ public class AdminAjaxController extends AbstractUserController {
         } else {
             super.update(userTo);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);//если все хорошо, то возвращаем код возврата ОК (200).
     }
 
     @PostMapping(value = "/{id}")

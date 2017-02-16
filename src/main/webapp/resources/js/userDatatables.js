@@ -22,7 +22,7 @@ function enable(chkbox, id) {
 $(function () {
     datatableApi = $('#datatable').DataTable({
         "ajax": {
-            "url": ajaxUrl,
+            "url": ajaxUrl,//url для отдачи данны с сервера
             "dataSrc": ""
         },
         "paging": false,
@@ -33,7 +33,7 @@ $(function () {
             },
             {
                 "data": "email",
-                "render": function (data, type, row) {
+                "render": function (data, type, row) { //функция задает отрисовку
                     if (type == 'display') {
                         return '<a href="mailto:' + data + '">' + data + '</a>';
                     }
@@ -78,9 +78,9 @@ $(function () {
                 "asc"
             ]
         ],
-        "createdRow": function (row, data, dataIndex) {
-            if (!data.enabled) {
-                $(row).addClass("disabled");
+        "createdRow": function (row, data, dataIndex) {//данный колбэк вызывается, когда отрисовывается строка. data - это данные JSON для кажой строки
+            if (!data.enabled) { //проверяем
+                $(row).addClass("disabled"); //делаем соответствующий стиль
             }
         },
         "initComplete": makeEditable
