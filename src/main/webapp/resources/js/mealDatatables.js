@@ -17,6 +17,8 @@ function updateTable() {
 }
 
 $(function () {
+
+
     datatableApi = $("#datatable").DataTable({
         "ajax": {
             "url": ajaxUrl,//url для отдачи данных с сервера
@@ -66,4 +68,31 @@ $(function () {
         },
         "initComplete": makeEditable
     });
+
+    // $.datetimepicker.setLocale(localeCode);
+
+    var startDate = $('#startDate');
+    var endDate = $('#endDate');
+    startDate.datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+
+    });
+    endDate.datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+    });
+
+    $('#startTime, #endTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
+
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
+
+
 });

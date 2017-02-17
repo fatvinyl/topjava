@@ -9,19 +9,23 @@
     <http pattern="/resources/**" security="none"/>
     <http pattern="/webjars/**" security="none"/>
 
+    <!--все запросы по /rest/** будут идти через фильтр restSecurityFilterChain, причем сессия не создается-->
     <http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
         <http-basic/>
+        <!--по /rest/admin/** доступ только у админа-->
         <intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <!--по /** - с логином и паролем надо пройти авторизацию-->
         <intercept-url pattern="/**" access="isAuthenticated()"/>
         <csrf disabled="true"/>
     </http>
 
     <http>
+        <!--на страницу login мы любому юзеру разрешаем зайти (access="permitAll)-->
         <intercept-url pattern="/login" access="permitAll"/>
 
         <intercept-url pattern="/**/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
-
+        <!--по дефолту после логина отправляет на meals-->
         <form-login login-page="/login" default-target-url="/meals"
                     authentication-failure-url="/login?error=true"
                     login-processing-url="/spring_security_check"/>
