@@ -5,11 +5,13 @@
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
-
+        <!--фильтры не используются-->
     <http pattern="/resources/**" security="none"/>
     <http pattern="/webjars/**" security="none"/>
-
+    <!--use-expressions означает, что мы можем использовать эепрешны типа "hasRole('ROLE_ADMIN')"
+    stateless означает, что REST запросы идут без сессии, т.е. сессия при авторизации не создается и SPRING хранит авторизованного юзера в ThreadLocal (класс, к-рый хранит по одному инстансу на поток)-->
     <http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
+    <!--http-basic - это базовая авторизация, логин и пароль вставляет в хедеры-->
         <http-basic/>
         <intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="isAuthenticated()"/>
@@ -33,6 +35,8 @@
     <beans:bean class="ru.javawebinar.topjava.util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>
 
     <authentication-manager>
+        <!--authentication-provider - это сервис, который проверяет, что наши логин и пароль подошли
+        При авторизации spring будет дергать метод loadUserByUsername в классе UserServiceImpl, который отмечен @Service("userService")-->
         <authentication-provider user-service-ref="userService">
             <password-encoder ref="passwordEncoder"/>
 

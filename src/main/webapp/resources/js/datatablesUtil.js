@@ -82,9 +82,9 @@ function successNoty(key) {
     });
 }
 
-function failNoty(event, jqXHR, options, jsExc) {
+function failNoty(event, jqXHR, options, jsExc) { //jqXHR - JSON объект
     closeNoty();
-    var errorInfo = $.parseJSON(jqXHR.responseText);
+    var errorInfo = $.parseJSON(jqXHR.responseText);//распарсиваем строку с JSON данными в объект javascript-объект
     failedNote = noty({
         text: i18n['common.failed'] + ': ' + jqXHR.statusText + "<br>"+ errorInfo.cause + "<br>" + errorInfo.detail,
         type: 'error',

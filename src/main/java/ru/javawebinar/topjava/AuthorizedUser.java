@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
  * GKislin
  * 06.03.2015.
  */
-public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
+public class AuthorizedUser extends org.springframework.security.core.userdetails.User { //возвращаемый юзер должен имплементировать интерфейс Userdetails
     private static final long serialVersionUID = 1L;
 
     private UserTo userTo;
@@ -22,7 +22,9 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         this.userTo = UserUtil.asTo(user);
     }
 
-    public static AuthorizedUser safeGet() {
+    public static AuthorizedUser safeGet() { //достает безопасно авторизированного юзера
+//        в SecurityContextHolder содержится информация (principal) о пользователе, работающем в наст. момент с приложением
+//        Authentication представляет пользователя (Principal) с точки зрения Spring Security.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
             return null;

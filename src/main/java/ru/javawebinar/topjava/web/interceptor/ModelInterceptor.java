@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * This interceptor adds the user to the model of every requests managed
  */
-public class ModelInterceptor extends HandlerInterceptorAdapter {
-
+public class ModelInterceptor extends HandlerInterceptorAdapter { //позволяет перехватывать вэб запросы.
+//В нашем случае нужен, чтобы положить юзера в каждый запрос и потом отобразить его в шапке (кнопка Admin Profile, User Profile)
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null && !modelAndView.isEmpty()) {

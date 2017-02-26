@@ -9,10 +9,13 @@
 
         <div class="collapse navbar-collapse">
             <form:form class="navbar-form navbar-right" action="logout" method="post">
+                <%--отрисовывается только если пользователь isAuthenticated--%>
                 <sec:authorize access="isAuthenticated()">
+                    <%--если роль админ, то показываем кнопку "список юзеров"--%>
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <a class="btn btn-info" href="users"><spring:message code="users.title"/></a>
                     </sec:authorize>
+                    <%--если обычный юзер, то разрешаем ему редактировать свой профайл и делать logout--%>
                     <a class="btn btn-info" role="button" href="profile">${userTo.name} <spring:message code="app.profile"/></a>
                     <button class="btn btn-primary" type="submit">
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>

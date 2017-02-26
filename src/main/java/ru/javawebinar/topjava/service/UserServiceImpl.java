@@ -26,7 +26,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
  * 06.03.2015.
  */
 @Service("userService")
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService { //UserDetailsService (spring security) позволяет UserServiceImpl использовать как бин, чтобы он ходил в базу, доставал авторизированного юзера и чтобы это было в логике spring security
 
     @Autowired
     private UserRepository repository;

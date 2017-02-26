@@ -20,10 +20,10 @@ public class GlobalControllerExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
     @ExceptionHandler(Exception.class)
-    @Order(Ordered.LOWEST_PRECEDENCE)
+    @Order(Ordered.LOWEST_PRECEDENCE) //приоритет обраотки. LOWEST_PRECEDENCE - самый низкий приоритет
     ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         LOG.error("Exception at request " + req.getRequestURL(), e);
-        ModelAndView mav = new ModelAndView("exception/exception");
+        ModelAndView mav = new ModelAndView("exception/exception");// в exception/exception.jsp будем отрисовывать
         mav.addObject("exception", e);
 
         // Interceptor is not invoked, put userTo

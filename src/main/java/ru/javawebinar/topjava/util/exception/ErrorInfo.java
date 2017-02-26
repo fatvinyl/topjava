@@ -4,7 +4,7 @@ package ru.javawebinar.topjava.util.exception;
  * User: gkislin
  * Date: 19.08.2014
  */
-public class ErrorInfo {
+public class ErrorInfo { //эксепшн будет возвращать клиенту данный объект, серилизованный в JSON
     public final String url;
     public final String cause;
     public final String detail;

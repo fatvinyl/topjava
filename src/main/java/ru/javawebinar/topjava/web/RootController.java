@@ -27,7 +27,7 @@ public class RootController extends AbstractUserController {
     }
 
 //    @Secured("ROLE_ADMIN")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')") //аннотация нужна для защиты. путь /users можно смотреть только под админом
     @GetMapping("/users")
     public String users() {
         return "users";
